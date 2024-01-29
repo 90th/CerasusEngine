@@ -13,11 +13,7 @@ namespace Player {
 	void HandleMovementEvents(SDL_Event event) {
 		switch (event.type) {
 		case SDL_KEYDOWN:
-			// Set flags for pressed keys
 			switch (event.key.keysym.sym) {
-			case SDLK_ESCAPE:
-				// Handle ESC key if needed
-				break;
 			case SDLK_w:
 				moveUp = true;
 				break;
