@@ -1,0 +1,56 @@
+[Game] [2024-01-28 23:24:38] FontInit
+[Game] [2024-01-28 23:24:38] FontInit
+[Game] [2024-01-28 23:24:38] FontInit
+[FPSRenderer] [2024-01-28 23:24:38] Init
+[Game] [2024-01-28 23:24:38] Init
+[Game] [2024-01-28 23:24:41] CleanUp
+[FPSRenderer] [2024-01-28 23:24:41] CleanUp
+[FPSRenderer] [2024-01-28 23:24:41] CleanUp
+[Game] [2024-01-28 23:24:41] CleanUp
+[Game] [2024-01-28 23:24:41] CleanUp
+[Game] [2024-01-28 23:24:41] CleanUp
+[Game] [2024-01-28 23:24:41] CleanUp
+[Game] [2024-01-28 23:24:41] CleanUp
+[Game] [2024-01-28 23:24:41] CleanUp
+[2024-01-28 23:25:06] [Game]FontInit
+[2024-01-28 23:25:06] [Game]FontInit
+[2024-01-28 23:25:06] [Game]FontInit
+[2024-01-28 23:25:06] [FPSRenderer]Init
+[2024-01-28 23:25:06] [Game]Init
+[2024-01-28 23:25:09] [Game]CleanUp
+[2024-01-28 23:25:09] [FPSRenderer]CleanUp
+[2024-01-28 23:25:09] [FPSRenderer]CleanUp
+[2024-01-28 23:25:09] [Game]CleanUp
+[2024-01-28 23:25:09] [Game]CleanUp
+[2024-01-28 23:25:09] [Game]CleanUp
+[2024-01-28 23:25:09] [Game]CleanUp
+[2024-01-28 23:25:09] [Game]CleanUp
+[2024-01-28 23:25:09] [Game]CleanUp
+[2024-01-28 23:25:15] [Game] FontInit
+[2024-01-28 23:25:15] [Game] FontInit
+[2024-01-28 23:25:15] [Game] FontInit
+[2024-01-28 23:25:15] [FPSRenderer] Init
+[2024-01-28 23:25:15] [Game] Init
+[2024-01-28 23:25:20] [Game] CleanUp
+[2024-01-28 23:25:20] [FPSRenderer] CleanUp
+[2024-01-28 23:25:20] [FPSRenderer] CleanUp
+[2024-01-28 23:25:20] [Game] CleanUp
+[2024-01-28 23:25:20] [Game] CleanUp
+[2024-01-28 23:25:20] [Game] CleanUp
+[2024-01-28 23:25:20] [Game] CleanUp
+[2024-01-28 23:25:21] [Game] CleanUp
+[2024-01-28 23:25:21] [Game] CleanUp
+[2024-01-28 23:25:26] [Game] FontInit
+[2024-01-28 23:25:26] [Game] FontInit
+[2024-01-28 23:25:26] [Game] FontInit
+[2024-01-28 23:25:26] [FPSRenderer] Init
+[2024-01-28 23:25:26] [Game] Init
+[2024-01-28 23:25:29] [Game] CleanUp
+[2024-01-28 23:25:29] [FPSRenderer] CleanUp
+[2024-01-28 23:25:29] [FPSRenderer] CleanUp
+[2024-01-28 23:25:29] [Game] CleanUp
+[2024-01-28 23:25:29] [Game] CleanUp
+[2024-01-28 23:25:29] [Game] CleanUp
+[2024-01-28 23:25:29] [Game] CleanUp
+[2024-01-28 23:25:29] [Game] CleanUp
+[2024-01-28 23:25:29] [Game] CleanUp
