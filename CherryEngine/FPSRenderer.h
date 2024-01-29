@@ -5,12 +5,10 @@
 #include "SDL_ttf.h"
 #include "iostream"
 
-namespace Game {
-	namespace FPSRenderer {
-		void Init(TTF_Font* font);
-		void RenderFPS(SDL_Renderer* renderer);
-		void CleanUp();
-	} // namespace FPSRenderer
-} // namespace Game
+namespace FPSRenderer {
+	void Init(TTF_Font* font);
+	void RenderFPS(SDL_Renderer* renderer);
+	void CleanUp();
+} // namespace FPSRenderer
 
 #endif // FPS_RENDERER_H
