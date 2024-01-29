@@ -21,8 +21,7 @@ namespace Game {
 		}
 
 		Logger::logWithLabel("Game", "Font initialized.");
-		// Load a system font with a different size (e.g., 32)
-		font = TTF_OpenFont("C:/Windows/Fonts/arial.ttf", 17); // Change the size value to your desired font size
+		font = TTF_OpenFont("C:/Windows/Fonts/arial.ttf", 17);
 
 		if (font == nullptr) {
 			std::cerr << "TTF_OpenFont Error: " << TTF_GetError() << std::endl;
@@ -37,7 +36,6 @@ namespace Game {
 		window = SDL_CreateWindow("[CherryEngine]", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_SHOWN);
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		FontInit();
-		// Initialize FPS rendering
 		FPSRenderer::Init(font);
 		Logger::logWithLabel("Game", "Game initialized.");
 	}
@@ -81,9 +79,8 @@ namespace Game {
 		SDL_SetRenderDrawColor(renderer, 22, 0, 0, 255);
 		SDL_RenderClear(renderer);
 
-		// Draw the player circle
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		SDL_RenderDrawLine(renderer, Player::circleX, Player::circleY, Player::circleX + 20, Player::circleY); // Adjust radius as needed
+		SDL_RenderDrawLine(renderer, Player::circleX, Player::circleY, Player::circleX + 20, Player::circleY);
 
 		// Render FPS text
 		FPSRenderer::RenderFPS(renderer);

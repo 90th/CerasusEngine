@@ -4,7 +4,7 @@
 #include <string>
 
 namespace Logger {
-	void logWithLabel(const std::string& label, const std::string& message, bool logToFile = false, const std::string& filename = "log.txt");
+	void logWithLabel(const std::string& label, const std::string& message);
 }
 
 #endif // LOGGER_H

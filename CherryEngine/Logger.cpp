@@ -1,6 +1,5 @@
 #include "logger.h"
 #include <iostream>
-#include <fstream>
 #include <ctime>
 
 namespace Logger {
@@ -16,21 +15,10 @@ namespace Logger {
 		return std::string(timestamp);
 	}
 
-	void logWithLabel(const std::string& label, const std::string& message, bool logToFile, const std::string& filename) {
+	void logWithLabel(const std::string& label, const std::string& message) {
 		std::string timestamp = getCurrentTimestamp();
 		std::string formattedMessage = "[" + timestamp + "] [" + label + "] " + message;
 
-		std::cout << formattedMessage << std::endl;
-
-		if (logToFile) {
-			std::ofstream logFile(filename, std::ios::app);
-			if (logFile.is_open()) {
-				logFile << formattedMessage << std::endl;
-				logFile.close();
-			}
-			else {
-				std::cerr << "Error: Unable to open log file: " << filename << "\n";
-			}
-		}
+		std::cout << formattedMessage << "\n";
 	}
 }
