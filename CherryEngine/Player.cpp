@@ -53,12 +53,6 @@ namespace Player {
 	}
 
 	void RenderPlayer(SDL_Renderer* renderer, int playerX, int playerY, int playerSpeed) {
-		/**
-		* @param renderer: The SDL renderer to draw on
-		* @param playerX: The x-coordinate of the player's circle
-		* @param playerY: The y-coordinate of the player's circle
-		* @param playerSpeed: The speed of the player's circle
-		*/
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderDrawLine(renderer, playerX, playerY, playerX + 20, playerY); // Base
 		SDL_RenderDrawLine(renderer, playerX, playerY, playerX + 10, playerY - 20); // Left side
