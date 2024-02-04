@@ -9,7 +9,6 @@ namespace Player {
 	bool moveDown = false;
 	bool moveLeft = false;
 	bool moveRight = false;
-	SDL_Renderer* renderer = nullptr;
 
 	void HandleMovementEvents(SDL_Event event) {
 		switch (event.type) {
