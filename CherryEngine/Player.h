@@ -4,9 +4,9 @@
 #include "SDL.h"
 
 namespace Player {
-	extern int circleX;
-	extern int circleY;
-	extern const int circleSpeed;
+	extern int playerX;
+	extern int playerY;
+	extern const int playerSpeed;
 
 	extern bool moveUp;
 	extern bool moveDown;
@@ -15,6 +15,7 @@ namespace Player {
 
 	void HandleMovementEvents(SDL_Event event);
 	void UpdatePosition();
+	void RenderPlayer(SDL_Renderer* renderer, int playerX, int playerY, int playerSpeed);
 }
 
 #endif // PLAYER_H

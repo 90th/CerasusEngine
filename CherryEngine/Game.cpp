@@ -79,10 +79,7 @@ namespace Game {
 		SDL_SetRenderDrawColor(renderer, 22, 0, 0, 255);
 		SDL_RenderClear(renderer);
 
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		SDL_RenderDrawLine(renderer, Player::circleX, Player::circleY, Player::circleX + 20, Player::circleY);
-
-		// Render FPS text
+		Player::RenderPlayer(renderer, Player::playerX, Player::playerY, Player::playerSpeed);
 		FPSRenderer::RenderFPS(renderer);
 
 		SDL_RenderPresent(renderer);

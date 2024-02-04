@@ -1,14 +1,15 @@
 #include "Player.h"
 
 namespace Player {
-	int circleX = 100;
-	int circleY = 100;
-	const int circleSpeed = 5;
+	int playerX = 100;
+	int playerY = 100;
+	const int playerSpeed = 5;
 
 	bool moveUp = false;
 	bool moveDown = false;
 	bool moveLeft = false;
 	bool moveRight = false;
+	SDL_Renderer* renderer = nullptr;
 
 	void HandleMovementEvents(SDL_Event event) {
 		switch (event.type) {
@@ -51,14 +52,27 @@ namespace Player {
 		}
 	}
 
+	void RenderPlayer(SDL_Renderer* renderer, int playerX, int playerY, int playerSpeed) {
+		/**
+		* @param renderer: The SDL renderer to draw on
+		* @param playerX: The x-coordinate of the player's circle
+		* @param playerY: The y-coordinate of the player's circle
+		* @param playerSpeed: The speed of the player's circle
+		*/
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		SDL_RenderDrawLine(renderer, playerX, playerY, playerX + 20, playerY); // Base
+		SDL_RenderDrawLine(renderer, playerX, playerY, playerX + 10, playerY - 20); // Left side
+		SDL_RenderDrawLine(renderer, playerX + 20, playerY, playerX + 10, playerY - 20); // Right side
+	}
+
 	void UpdatePosition() {
 		if (moveUp)
-			circleY -= circleSpeed;
+			playerY -= playerSpeed;
 		if (moveDown)
-			circleY += circleSpeed;
+			playerY += playerSpeed;
 		if (moveLeft)
-			circleX -= circleSpeed;
+			playerX -= playerSpeed;
 		if (moveRight)
-			circleX += circleSpeed;
+			playerX += playerSpeed;
 	}
 }
