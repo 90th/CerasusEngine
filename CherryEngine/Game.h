@@ -4,6 +4,14 @@
 #include "SDL.h"
 #include "SDL_ttf.h"
 
+#include "FPSRenderer.h"
+#include "Player.h"
+#include "Logger.h"
+
+#include <vector>
+#include <string>
+#include <iostream>
+
 namespace Game {
 	void Init();
 	void CleanUp();
@@ -11,6 +19,7 @@ namespace Game {
 	void Update();
 	void Render();
 	void Run();
+	void LoadPlayerTexture(SDL_Renderer* renderer);
 } // namespace Game
 
 #endif // GAME_H

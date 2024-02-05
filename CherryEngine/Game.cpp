@@ -1,16 +1,15 @@
 #include "Game.h"
-#include "FPSRenderer.h"
-#include "Player.h"
-#include "Logger.h"
-#include <vector>
-#include <string>
-#include <iostream>
+#include "SDL_image.h"
 
 namespace Game {
 	bool isRunning = true;
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
 	TTF_Font* font = nullptr; // Font for rendering text
+	int frameWidth = 32;  // Width of each frame in pixels
+	int frameHeight = 32; // Height of each frame in pixels
+	// Define player texture globally or in a scope accessible to the rendering function
+	SDL_Texture* playerTexture;
 
 	void FontInit() {
 		Logger::logWithLabel("Game", "Initializing font...");
@@ -37,6 +36,7 @@ namespace Game {
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		FontInit();
 		FPSRenderer::Init(font);
+		LoadPlayerTexture(renderer);
 		Logger::logWithLabel("Game", "Game initialized.");
 	}
 
@@ -72,24 +72,36 @@ namespace Game {
 
 	void Update() {
 		// Update game state here
-		Player::UpdatePosition(); // Update player position
+		//Player::UpdateAnimation();
+		//Player::UpdatePosition(); // Update player position
+	}
+
+	void LoadPlayerTexture(SDL_Renderer* renderer) {
+		// Load player texture from file
+		SDL_Surface* playerSurface = IMG_Load("32x32-bat-sprite.png");
+		playerTexture = SDL_CreateTextureFromSurface(renderer, playerSurface);
+		SDL_FreeSurface(playerSurface);
 	}
 
 	void Render() {
 		SDL_SetRenderDrawColor(renderer, 22, 0, 0, 255);
 		SDL_RenderClear(renderer);
 
-		Player::RenderPlayer(renderer, Player::playerX, Player::playerY, Player::playerSpeed);
+		// Render player with the loaded texture
+		Player::RenderPlayer(renderer, playerTexture, frameWidth, frameHeight);
+
+		// Render FPS
 		FPSRenderer::RenderFPS(renderer);
 
 		SDL_RenderPresent(renderer);
 	}
 
 	void Run() {
+		Logger::logWithLabel("#>", "We are all alone on life's journey, held captive by the limitations of human conciousness");
 		Init();
 
 		while (isRunning) {
-			Uint32 startTime = SDL_GetTicks(); // Start time of the frame
+			Uint32 startTime = SDL_GetTicks(); // Start time of the
 			HandleEvents();
 			Update();
 			Render();
