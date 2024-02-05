@@ -83,11 +83,8 @@ namespace Player {
 
 		// Check if enough time has passed since the last animation update
 		if (currentTime - lastUpdateTime >= ANIMATION_DELAY) {
-			// Update the animation frame index only if enough time has passed
-			if (moveUp || moveDown || moveLeft || moveRight)
-				currentFrameIndex = (currentFrameIndex + 1) % NUM_FRAMES;
-			else
-				currentFrameIndex = 0; // Reset to idle frame if not moving
+			// Update the animation frame index
+			currentFrameIndex = (currentFrameIndex + 1) % NUM_FRAMES;
 
 			// Update the last update time to the current time
 			lastUpdateTime = currentTime;
@@ -119,7 +116,8 @@ namespace Player {
 		SDL_Rect srcRect = { frameX * frameWidth, frameY * frameHeight, frameWidth, frameHeight };
 
 		// Destination rectangle for rendering
-		SDL_Rect destRect = { playerX, playerY, frameWidth, frameHeight };
+		int scaleFactor = 2; // Adjust this value to change the scale factor
+		SDL_Rect destRect = { playerX, playerY, frameWidth * scaleFactor, frameHeight * scaleFactor }; // Adjust dimensions here
 
 		// Render the current frame of the player sprite
 		SDL_RenderCopy(renderer, playerTexture, &srcRect, &destRect);
