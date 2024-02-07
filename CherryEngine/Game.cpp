@@ -35,16 +35,19 @@ namespace Game {
 		window = SDL_CreateWindow("[CherryEngine]", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_SHOWN);
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		FontInit();
-		FPSRenderer::Init(font);
+		DebugRenderer::Init(font);
+
 		LoadPlayerTexture(renderer);
+		Player::InitializeBullets();
 		Logger::logWithLabel("Game", "Game initialized.");
+		DebugRenderer::AddDebugMessage("[Game]", "Game Initialized");
 	}
 
 	void CleanUp() {
 		Logger::logWithLabel("Game", "Cleaning up FPS renderer...");
-		FPSRenderer::CleanUp(); // Clean up FPS rendering
+		DebugRenderer::CleanUp(); // Clean up FPS rendering
 		Logger::logWithLabel("Game", "Closing font...");
-		TTF_CloseFont(font);
+		DebugRenderer::CleanUp();
 		Logger::logWithLabel("Game", "Quitting TTF...");
 		TTF_Quit();
 		Logger::logWithLabel("Game", "Destroying renderer...");
@@ -71,9 +74,8 @@ namespace Game {
 	}
 
 	void Update() {
-		// Update game state here
-		//Player::UpdateAnimation();
-		//Player::UpdatePosition(); // Update player position
+		Player::UpdateBullets();
+		Player::UpdateAnimation();
 	}
 
 	void LoadPlayerTexture(SDL_Renderer* renderer) {
@@ -89,9 +91,9 @@ namespace Game {
 
 		// Render player with the loaded texture
 		Player::RenderPlayer(renderer, playerTexture, frameWidth, frameHeight);
-
+		Player::renderBullets(renderer);
 		// Render FPS
-		FPSRenderer::RenderFPS(renderer);
+		DebugRenderer::Render(renderer);
 
 		SDL_RenderPresent(renderer);
 	}

@@ -7,4 +7,4 @@ namespace Logger {
 	void logWithLabel(const std::string& label, const std::string& message);
 }
 
-#endif // LOGGER_H
+#endif

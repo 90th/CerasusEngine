@@ -10,6 +10,8 @@ namespace Player {
 	bool moveLeft = false;
 	bool moveRight = false;
 
+	bool shootingEnabled = false;
+
 	// Animation constants and variables
 	const int NUM_FRAMES = 3; // Number of frames in each animation
 	const int IDLE_FRAME_SEQUENCE[NUM_FRAMES] = { 0, 1, 2 }; // Sequence of frames for idle animation
@@ -25,6 +27,122 @@ namespace Player {
 
 	int currentFrameIndex = 0; // Index of the current frame in the animation sequence
 
+	struct Bullet {
+		double x, y;
+		double vx, vy;
+		bool active;
+		Uint32 shootTime;
+	};
+
+	const int MAX_BULLETS = 10;
+	std::vector<Bullet> bullets(MAX_BULLETS);
+	// define separate vectors for active and inactive bullets
+	std::deque<Bullet> activeBullets;
+	std::deque<Bullet> inactiveBullets;
+
+	void Shoot() {
+		// check if there are inactive bullets available in the pool
+		if (!inactiveBullets.empty()) {
+			// take an inactive bullet from the pool
+			Bullet& bullet = inactiveBullets.front();
+
+			// set bullet properties
+			bullet.x = playerX;
+			bullet.y = playerY;
+
+			if (moveLeft) {
+				bullet.vx = -10;
+				bullet.vy = 0;
+			}
+			else if (moveRight) {
+				bullet.vx = 10;
+				bullet.vy = 0;
+			}
+			else {
+				bullet.vx = 0;
+				bullet.vy = -10;
+			}
+
+			// activate the bullet
+			bullet.active = true;
+
+			// set the shoot time
+			bullet.shootTime = SDL_GetTicks();
+
+			// move the bullet to the active bullets vector
+			activeBullets.push_back(std::move(bullet));
+
+			// remove the bullet from the pool of inactive bullets
+			inactiveBullets.pop_front();
+
+			// debug messages
+			DebugRenderer::AddDebugMessage("[Shoot]", "Bullet shot: x = " + std::to_string(bullet.x) + ", y = " + std::to_string(bullet.y));
+		}
+	}
+
+	void UpdateBullets() {
+		for (auto& bullet : activeBullets) {
+			// update bullet position
+			bullet.x += bullet.vx;
+			bullet.y += bullet.vy;
+			// Check if bullet's time is up (20 seconds)
+			if (SDL_GetTicks() - bullet.shootTime >= 20000) {
+				bullet.active = false;
+				inactiveBullets.push_back(std::move(bullet)); // Move bullet back to inactive pool
+				DebugRenderer::AddDebugMessage("[UpdateBullets]", "Bullet deactivated due to timeout: x = " + std::to_string(bullet.x) + ", y = " + std::to_string(bullet.y));
+			}
+
+			// check if bullet is out of bounds or hit something
+			// if it did, deactivate the bullet
+			// soon collision detection logic here
+			if (bullet.y < 0 || bullet.y > 720 || bullet.x < 0 || bullet.x > 1280) {
+				bullet.active = false;
+				inactiveBullets.push_back(std::move(bullet)); // Move bullet back to inactive pool
+				DebugRenderer::AddDebugMessage("[UpdateBullets]", "Bullet deactivated due to out of bounds: x = " + std::to_string(bullet.x) + ", y = " + std::to_string(bullet.y));
+			}
+		}
+
+		// remove inactive bullets from active bullets vector
+		activeBullets.erase(std::remove_if(activeBullets.begin(), activeBullets.end(),
+			[](const Bullet& bullet) { return !bullet.active; }), activeBullets.end());
+	}
+	void renderBullets(SDL_Renderer* renderer) {
+		std::vector<decltype(activeBullets)::iterator> bulletsToRemove;
+
+		for (auto it = activeBullets.begin(); it != activeBullets.end(); ++it) {
+			Bullet& bullet = *it;
+			if (bullet.active) {
+				Uint8 alpha = 255;
+				Uint32 elapsedTime = SDL_GetTicks() - bullet.shootTime;
+				if (elapsedTime < 1500) {
+					alpha = static_cast<Uint8>(255 * (1.0 - static_cast<double>(elapsedTime) / 1500.0));
+				}
+				else {
+					bulletsToRemove.push_back(it);
+					continue;
+				}
+
+				SDL_SetRenderDrawColor(renderer, 255, 255, 255, alpha);
+
+				SDL_Rect bulletRect = { static_cast<int>(bullet.x), static_cast<int>(bullet.y), 4, 4 };
+				SDL_RenderFillRect(renderer, &bulletRect);
+			}
+		}
+
+		for (auto it : bulletsToRemove) {
+			(*it).active = false;
+			inactiveBullets.push_back(std::move(*it));
+			activeBullets.erase(it);
+		}
+	}
+
+	void InitializeBullets() {
+		// Initialize the pool of bullets
+		for (int i = 0; i < MAX_BULLETS; ++i) {
+			inactiveBullets.emplace_back(); // Add an inactive bullet to the pool
+		}
+	}
+
 	void HandleMovementEvents(SDL_Event event) {
 		switch (event.type) {
 		case SDL_KEYDOWN:
@@ -34,12 +152,19 @@ namespace Player {
 				break;
 			case SDLK_a:
 				moveLeft = true;
+				shootingEnabled = false;
 				break;
 			case SDLK_s:
 				moveDown = true;
 				break;
 			case SDLK_d:
 				moveRight = true;
+				shootingEnabled = false;
+				break;
+			case SDLK_SPACE:
+				if (shootingEnabled) {
+					Shoot();
+				}
 				break;
 				// Handle other key presses
 			}
@@ -58,6 +183,9 @@ namespace Player {
 				break;
 			case SDLK_d:
 				moveRight = false;
+				break;
+			case SDLK_SPACE:
+				shootingEnabled = true; // Enable shooting when space bar is released
 				break;
 				// Handle other key releases
 			}
@@ -94,8 +222,6 @@ namespace Player {
 	void RenderPlayer(SDL_Renderer* renderer, SDL_Texture* playerTexture, int frameWidth, int frameHeight) {
 		// Update player position based on movement
 		UpdatePosition();
-		// Update player animation
-		UpdateAnimation();
 
 		const int* frameSequence;
 		if (moveUp)

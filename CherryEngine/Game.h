@@ -4,9 +4,10 @@
 #include "SDL.h"
 #include "SDL_ttf.h"
 
-#include "FPSRenderer.h"
 #include "Player.h"
 #include "Logger.h"
+#include "Game.h"
+#include "DebugRenderer.h"
 
 #include <vector>
 #include <string>
