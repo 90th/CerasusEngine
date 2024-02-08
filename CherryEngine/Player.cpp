@@ -27,6 +27,7 @@ namespace Player {
 
 	int currentFrameIndex = 0; // Index of the current frame in the animation sequence
 
+	// Bullets will be moved to its own BulletManager (bullet for now, just a simple POC to figure out what i am doing.)
 	struct Bullet {
 		double x, y;
 		double vx, vy;
@@ -41,24 +42,35 @@ namespace Player {
 	std::deque<Bullet> inactiveBullets;
 
 	void Shoot() {
+		if (activeBullets.size() >= MAX_BULLETS) {
+			DebugRenderer::AddDebugMessage("[Shoot]", "Maximum number of active bullets reached. Cannot shoot.");
+			return;
+		}
+
 		// check if there are inactive bullets available in the pool
 		if (!inactiveBullets.empty()) {
 			// take an inactive bullet from the pool
 			Bullet& bullet = inactiveBullets.front();
 
 			// set bullet properties
-			bullet.x = playerX;
-			bullet.y = playerY;
+			bullet.x = playerX + 29;
+			bullet.y = playerY + 25;
 
 			if (moveLeft) {
+				bullet.x = playerX + 22;
+				bullet.y = playerY + 25;
 				bullet.vx = -10;
 				bullet.vy = 0;
 			}
 			else if (moveRight) {
+				bullet.x = playerX + 48;
+				bullet.y = playerY + 25;
 				bullet.vx = 10;
 				bullet.vy = 0;
 			}
 			else {
+				bullet.x = playerX + 29;
+				bullet.y = playerY + 25;
 				bullet.vx = 0;
 				bullet.vy = -10;
 			}
@@ -85,8 +97,8 @@ namespace Player {
 			// update bullet position
 			bullet.x += bullet.vx;
 			bullet.y += bullet.vy;
-			// Check if bullet's time is up (20 seconds)
-			if (SDL_GetTicks() - bullet.shootTime >= 20000) {
+			// Check if bullet's time is up (10 seconds)
+			if (SDL_GetTicks() - bullet.shootTime >= 10000) {
 				bullet.active = false;
 				inactiveBullets.push_back(std::move(bullet)); // Move bullet back to inactive pool
 				DebugRenderer::AddDebugMessage("[UpdateBullets]", "Bullet deactivated due to timeout: x = " + std::to_string(bullet.x) + ", y = " + std::to_string(bullet.y));
@@ -122,7 +134,46 @@ namespace Player {
 					continue;
 				}
 
-				SDL_SetRenderDrawColor(renderer, 255, 255, 255, alpha);
+				// Calculate hue based on time
+				double hue = static_cast<double>(SDL_GetTicks()) / 10.0; // Adjust this value to control the speed of the color change
+				hue = fmod(hue, 360.0); // Wrap around to ensure hue stays within [0, 360)
+				// Convert HSV to RGB
+				double c = 1.0;
+				double x = c * (1 - std::abs(fmod(hue / 60.0, 2.0) - 1));
+				double m = 0.0;
+				double r, g, b;
+				if (hue >= 0 && hue < 60) {
+					r = c;
+					g = x;
+					b = 0;
+				}
+				else if (hue >= 60 && hue < 120) {
+					r = x;
+					g = c;
+					b = 0;
+				}
+				else if (hue >= 120 && hue < 180) {
+					r = 0;
+					g = c;
+					b = x;
+				}
+				else if (hue >= 180 && hue < 240) {
+					r = 0;
+					g = x;
+					b = c;
+				}
+				else if (hue >= 240 && hue < 300) {
+					r = x;
+					g = 0;
+					b = c;
+				}
+				else {
+					r = c;
+					g = 0;
+					b = x;
+				}
+
+				SDL_SetRenderDrawColor(renderer, static_cast<Uint8>(r * 255), static_cast<Uint8>(g * 255), static_cast<Uint8>(b * 255), alpha);
 
 				SDL_Rect bulletRect = { static_cast<int>(bullet.x), static_cast<int>(bullet.y), 4, 4 };
 				SDL_RenderFillRect(renderer, &bulletRect);

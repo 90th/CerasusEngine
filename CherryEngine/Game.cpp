@@ -88,12 +88,11 @@ namespace Game {
 	void Render() {
 		SDL_SetRenderDrawColor(renderer, 22, 0, 0, 255);
 		SDL_RenderClear(renderer);
+		DebugRenderer::Render(renderer);
 
 		// Render player with the loaded texture
 		Player::RenderPlayer(renderer, playerTexture, frameWidth, frameHeight);
 		Player::renderBullets(renderer);
-		// Render FPS
-		DebugRenderer::Render(renderer);
 
 		SDL_RenderPresent(renderer);
 	}
